@@ -4,7 +4,7 @@ LABEL maintainer="elvia@elvia.no"
 WORKDIR /app
 COPY . .
 RUN dotnet restore \
-        ./core-demo-api.csproj \
+        ./core-demo-app.csproj \
     && dotnet publish \
         ./core-demo-app.csproj \
         --configuration Release \
