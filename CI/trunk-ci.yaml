@@ -9,44 +9,23 @@ variables:
   name: demo-app
   namespace: core
 
-resources:
-  repositories:
-  - repository: templates
-    type: github
-    name: 3lvia/core-azure-devops-templates
-    endpoint: 3lvia
 
 stages:
-- stage: Build
+- stage: Build        
   jobs:
-  - template: test.yaml@templates
-  - template: build.yaml@templates
-    parameters:
-      dockerfile: src/Dockerfile
-
-- stage: DeployDev
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'))
-  jobs:
-  - template: deploy.yaml@templates
-    parameters:
-      environment: dev
-      helmValuesFile: values.yaml
-
-- stage: DeployTest
-  dependsOn: DeployDev
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'))
-  jobs:
-  - template: deploy.yaml@templates
-    parameters:
-      environment: test
-      helmValuesFile: values.yaml
-
-- stage: DeployProd
-  dependsOn: DeployTest
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'))
-  jobs:
-  - template: deploy.yaml@templates
-    parameters:
-      environment: prod
-      helmValuesFile: values.yaml
+    - job: Build
+      steps:
+        - task: Docker@2
+          displayName: "Login for $(containerregistry)"
+          inputs:
+            containerRegistry: $(containerregistry)
+            command: login
+        - task: aquasecScanner@4
+          displayName: "Scan docker image with Aquasec"
+          inputs:
+            image: "mcr.microsoft.com/dotnet/samples"
+            scanner: "containerregistryelvia.azurecr.io/aquasec/scanner:latest"
+            connection: "aqua-scanner"
+            policies: Default
+          continueOnError: false
+      
