@@ -23,7 +23,7 @@ stages:
         - task: aquasecScanner@4
           displayName: "Scan docker image with Aquasec"
           inputs:
-            image: "mcr.microsoft.com/dotnet/samples:aspnetapp"
+            image: "containerregistryelvia.azurecr.io/dotnet/samples:aspnetapp"
             scanner: "containerregistryelvia.azurecr.io/aquasec/scanner:latest"
             connection: "aqua-scanner"
             policies: Default
