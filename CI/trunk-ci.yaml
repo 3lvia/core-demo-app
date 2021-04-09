@@ -25,7 +25,8 @@ stages:
           displayName: Pull docker image
           inputs:
             containerRegistry: $(containerregistry)
-            command: pull containerregistryelvia.azurecr.io/dotnet/samples:aspnetapp
+            command: pull
+            arguments: containerregistryelvia.azurecr.io/dotnet/samples:aspnetapp
 
         - task: aquasecScanner@4
           displayName: "Scan docker image with Aquasec"
