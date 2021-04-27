@@ -7,30 +7,44 @@ variables:
   name: demo-app
   namespace: core
 
+  resources:
+    repositories:
+    - repository: templates
+      type: github
+      name: 3lvia/core-azure-devops-templates
+      endpoint: 3lvia
+  
 stages:
-- stage: Build        
+- stage: Build
   jobs:
-    - job: Build
-      steps:
-        - task: Docker@2
-          displayName: "Login for $(containerregistry)"
-          inputs:
-            containerRegistry: $(containerregistry)
-            command: login
+  - template: test.yaml@templates
+  - template: build.yaml@templates
+    parameters:
+      dockerfile: src/Dockerfile
 
-        - task: Docker@2
-          displayName: Pull docker image
-          inputs:
-            containerRegistry: $(containerregistry)
-            command: pull
-            arguments: containerregistryelvia.azurecr.io/dotnet/samples:aspnetapp
+- stage: DeployDev
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'))
+  jobs:
+  - template: deploy.yaml@templates
+    parameters:
+      environment: dev
+      helmValuesFile: values.yaml
 
-        - task: aquasecScanner@4
-          displayName: "Scan docker image with Aquasec"
-          inputs:
-            image: "containerregistryelvia.azurecr.io/dotnet/samples:aspnetapp"
-            scanner: "containerregistryelvia.azurecr.io/aquasec/scanner:latest"
-            connection: "aqua-scanner"
-            policies: Default
-          continueOnError: false
-      
+- stage: DeployTest
+  dependsOn: DeployDev
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'))
+  jobs:
+  - template: deploy.yaml@templates
+    parameters:
+      environment: test
+      helmValuesFile: values.yaml
+
+- stage: DeployProd
+  dependsOn: DeployTest
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'))
+  jobs:
+  - template: deploy.yaml@templates
+    parameters:
+      environment: prod
+      helmValuesFile: values.yaml

@@ -1,0 +1,36 @@
+trigger:
+  - trunk
+
+variables:
+  containerregistry: 'ContainerRegistryElvia'
+  imagetag: $(Build.BuildNumber)
+  name: demo-app
+  namespace: core
+
+stages:
+- stage: Build        
+  jobs:
+    - job: Build
+      steps:
+        - task: Docker@2
+          displayName: "Login for $(containerregistry)"
+          inputs:
+            containerRegistry: $(containerregistry)
+            command: login
+
+        - task: Docker@2
+          displayName: Pull docker image
+          inputs:
+            containerRegistry: $(containerregistry)
+            command: pull
+            arguments: containerregistryelvia.azurecr.io/dotnet/samples:aspnetapp
+
+        - task: aquasecScanner@4
+          displayName: "Scan docker image with Aquasec"
+          inputs:
+            image: "containerregistryelvia.azurecr.io/dotnet/samples:aspnetapp"
+            scanner: "containerregistryelvia.azurecr.io/aquasec/scanner:latest"
+            connection: "aqua-scanner"
+            policies: Default
+          continueOnError: false
+      
