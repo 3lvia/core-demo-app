@@ -11,7 +11,7 @@ RUN dotnet restore \
         --output ./out
 
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0 AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:7.0 AS runtime
 LABEL maintainer="elvia@elvia.no"
 
 RUN addgroup application-group --gid 1001 \
