@@ -6,6 +6,7 @@ namespace core_demo_app
     {
         static void Main(string[] args)
         {
+            string s = "not used";
             Console.WriteLine("Hello World!");
             while (true)
             {
