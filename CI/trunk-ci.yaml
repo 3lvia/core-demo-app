@@ -34,6 +34,15 @@ stages:
       environment: dev
       helmValuesFile: values.yaml
 
+- stage: DeploySandbox
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'))
+  jobs:
+  - template: deploy.yaml@templates
+    parameters:
+      environment: sandbox
+      helmValuesFile: values.yaml
+
 - stage: DeployTest
   dependsOn: DeployDev
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'))
