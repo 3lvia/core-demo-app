@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 LABEL maintainer="elvia@elvia.no"
 
 WORKDIR /app
@@ -11,7 +11,7 @@ RUN dotnet restore \
         --output ./out
 
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0 AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
 LABEL maintainer="elvia@elvia.no"
 
 RUN apt-get update
