@@ -1,7 +1,5 @@
 {
-    "extends": [
-        "config:base"
-    ],
+    "extends": ["github>3lvia/renovate-config"],
     "packageRules": [
         {
             "matchUpdateTypes": [
