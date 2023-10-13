@@ -45,11 +45,11 @@ stages:
             policies: Default
           continueOnError: false
 
-        -  script: |
-           trivy fs --scanners config,vuln,secret .
-           # To customize which severities to scan for, add the following flag: --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
-           # To enable SAST scanning, add: --sast
-           # To enable reachability scanning, add: --reachability
-           # To enable npm/dotnet non-lock file scanning, add: --package-json / --dotnet-proj
-          displayName: Aqua scanner
+        - script: |
+            trivy fs --scanners config,vuln,secret .
+            # To customize which severities to scan for, add the following flag: --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+            # To enable SAST scanning, add: --sast
+            # To enable reachability scanning, add: --reachability
+            # To enable npm/dotnet non-lock file scanning, add: --package-json / --dotnet-proj
+          displayName: Aqua scanner Saas
       
