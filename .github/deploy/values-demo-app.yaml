@@ -1,0 +1,17 @@
+# This is a minimal values file
+# An example of all possible usages can be found here:
+# https://github.com/3lvia/kubernetes-charts/blob/master/elvia-deployment/values.yaml
+
+name: demo-app
+namespace: core
+microserviceType: webapi
+
+replicaCount: 1
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
