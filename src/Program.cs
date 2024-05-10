@@ -1,16 +1,15 @@
-﻿using System;
+﻿using CoreDemoApp;
 using Elvia.Telemetry;
 using Microsoft.Extensions.Hosting;
+using Elvia.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-Console.WriteLine("Starting core-demo-app");
+var builder = Host.CreateApplicationBuilder(args);
+builder.Configuration.AddHashiVaultSecrets();
 var instrumentationKey = Elvia.Configuration.HashiVault.HashiVault.EnsureHasValue("core/kv/appinsights/core/instrumentation-key");
-Console.WriteLine($"Instrumentation key: {instrumentationKey}");
+builder.Services
+    .AddStandardElviaTelemetryLoggingWorkerService(instrumentationKey);
+builder.Services.AddHostedService<Worker>();
 
-await Host
-    .CreateDefaultBuilder(args)
-    .ConfigureServices((context, services) =>
-    {
-        services
-            .AddStandardElviaTelemetryLoggingWorkerService(instrumentationKey);
-    }).RunConsoleAsync();
-    
+var host = builder.Build();
+host.Run();
