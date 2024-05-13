@@ -14,7 +14,7 @@ RUN dotnet restore \
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
 LABEL maintainer="elvia@elvia.no"
 
-RUN apt-get update && RUN apt-get upgrade -y
+RUN apt-get update && apt-get upgrade -y
 
 RUN addgroup application-group --gid 1001 \
     && adduser application-user --uid 1001 \
