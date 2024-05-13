@@ -1,0 +1,28 @@
+name: Build and Deploy to Kubernetes
+
+on:
+  push:
+    branches: [trunk]
+  pull_request:
+    branches: [trunk]
+  workflow_dispatch:
+    branches:
+      - trunk
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+  security-events: write
+  issues: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  unittests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 3lvia/core-github-actions-templates/unittest@trunk
+        with:
+          test-coverage: 'true'
