@@ -11,7 +11,7 @@ RUN dotnet restore \
         --output ./out
 
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:8.0-alpine AS runtime
 LABEL maintainer="elvia@elvia.no"
 
 RUN apt-get update && apt-get upgrade -y
