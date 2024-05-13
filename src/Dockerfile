@@ -11,11 +11,10 @@ RUN dotnet restore \
         --output ./out
 
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:8.0-alpine AS runtime
 LABEL maintainer="elvia@elvia.no"
 
-RUN apt-get update
-RUN apt-get upgrade -y
+RUN apk update && apk upgrade --no-cache
 
 RUN addgroup application-group --gid 1001 \
     && adduser application-user --uid 1001 \
