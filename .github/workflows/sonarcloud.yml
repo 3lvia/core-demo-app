@@ -7,7 +7,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build and analyze
+    name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
@@ -46,9 +46,3 @@ jobs:
           dotnet build
           ./sonar/scanner/dotnet-coverage collect 'dotnet test --filter "FullyQualifiedName!~Test.Integration"' -f xml  -o 'coverage.xml'
           ./sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-      - name: Add Coverage PR Comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
-        with:
-          recreate: true
-          path: code-coverage-results.md
