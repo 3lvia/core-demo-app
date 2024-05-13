@@ -9,19 +9,21 @@ on:
     branches:
       - trunk
 
-permissions:
-  actions: read
-  contents: read
-  id-token: write
-  security-events: write
-  issues: read
-  checks: write
-  pull-requests: write
+env:
+  APPLICATION_NAME: demo-app
+  SYSTEM_NAMESPACE: core
+  DOCKER_FILE: core-demo-api/Dockerfile
+  HELM_VALUES: '.github/deploy/values.yaml'
 
 jobs:
   unittests:
     name: Unit Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      issues: read
+      pull-requests: write
     steps:
       - uses: 3lvia/core-github-actions-templates/unittest@trunk
         with:
