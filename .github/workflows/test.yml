@@ -5,6 +5,11 @@ on:
       - trunk
   pull_request:
     types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  checks: write
+
 jobs:
   build:
     name: Test
