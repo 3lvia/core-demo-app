@@ -37,7 +37,7 @@ jobs:
       issues: read
       pull-requests: write
     steps:
-      - uses: 3lvia/core-github-actions-templates/sonarcloud@feature/sonarcloud
+      - uses: 3lvia/core-github-actions-templates/sonarcloud@trunk
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           sonarcloud-token: ${{ secrets.SONAR_TOKEN }}
