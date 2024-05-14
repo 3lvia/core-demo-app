@@ -28,3 +28,15 @@ jobs:
       - uses: 3lvia/core-github-actions-templates/unittest@trunk
         with:
           test-coverage: 'true'
+  sonarcloud:
+    name: Sonarcloud
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      issues: read
+      pull-requests: write
+    steps:
+      - uses: 3lvia/core-github-actions-templates/sonarcloud@feature/sonarcloud
+        with:
+          sonarcloud-project-key: '3lvia_core-demo-app'
