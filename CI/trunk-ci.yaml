@@ -24,6 +24,7 @@ stages:
   - template: build.yaml@templates
     parameters:
       dockerfile: src/Dockerfile
+      pushImageOnPR: true
 
 - stage: DeployDev
   dependsOn: Build
