@@ -7,6 +7,7 @@ using Azure.Storage.Blobs.Models;
 using System;
 using System.IO;
 using Azure.Identity;
+using Elvia.Configuration.HashiVault;
 
 namespace CoreDemoApp;
 
@@ -21,9 +22,9 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
     {
         logger.LogInformation("CoreDemoApp.Worker is working.");
 
-
+        var url = await HashiVault.EnsureHasValueAsync("core/kv/info/storage/core/primary-blob-endpoint");
         var blobServiceClient = new BlobServiceClient(
-            new Uri("https://elviacoredev.blob.core.windows.net"),
+            new Uri(url),
             new DefaultAzureCredential());
         //Create a unique name for the container
         string containerName = "oot-tmp";
